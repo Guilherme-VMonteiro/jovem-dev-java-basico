@@ -15,8 +15,7 @@ public class Exercicio2 {
 			listaDeNumeros.add(geradorDeNumeros.nextInt(100));
 		}
 
-		Collections.sort(listaDeNumeros);
-		Collections.reverse(listaDeNumeros);
+		Collections.sort(listaDeNumeros, Collections.reverseOrder());
 
 		for (Integer numero : listaDeNumeros) {
 			System.out.print(numero + " ");
