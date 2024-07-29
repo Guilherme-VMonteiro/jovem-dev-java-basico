@@ -9,25 +9,17 @@ public class Exercicio5 {
 	public static void main(String[] args) {
 		Set<Integer> conjuntoA = new HashSet<Integer>();
 		Set<Integer> conjuntoB = new HashSet<Integer>();
-		
+		Random geradorDeNumeros = new Random();
+
 		for (int i = 1; i <= 10; i++) {
-			conjuntoA.add(gerarNumero());
-			conjuntoB.add(gerarNumero());
+			conjuntoA.add(geradorDeNumeros.nextInt(31));
+			conjuntoB.add(geradorDeNumeros.nextInt(31));
 		}
-		
-//		System.out.println(conjuntoA.toString());
-//		System.out.println(conjuntoB.toString());
-		
+
 		for (Integer integer : conjuntoA) {
-			if(conjuntoB.contains(integer)) {
+			if (conjuntoB.contains(integer)) {
 				System.out.print(integer + " ");
 			}
 		}
-	}
-
-	public static int gerarNumero() {
-		Random gerador = new Random();
-
-		return gerador.nextInt(31);
 	}
 }

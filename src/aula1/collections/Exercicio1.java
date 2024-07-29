@@ -9,9 +9,10 @@ public class Exercicio1 {
 
 	public static void main(String[] args) {
 		List<Integer> listaDeNumeros = new ArrayList<Integer>();
+		Random geradorDeNumeros = new Random();
 
 		for (int i = 1; i <= 50; i++) {
-			listaDeNumeros.add(gerarNumero());
+			listaDeNumeros.add(geradorDeNumeros.nextInt(100));
 		}
 
 		Collections.sort(listaDeNumeros);
@@ -19,13 +20,5 @@ public class Exercicio1 {
 		for (Integer numero : listaDeNumeros) {
 			System.out.print(numero + " ");
 		}
-
 	}
-
-	public static int gerarNumero() {
-		Random gerador = new Random();
-
-		return gerador.nextInt(100);
-	}
-
 }

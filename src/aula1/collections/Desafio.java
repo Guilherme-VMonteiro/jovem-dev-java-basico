@@ -26,19 +26,31 @@ public class Desafio {
 		} while (!palavraInserida.equalsIgnoreCase("fim"));
 
 		Map<Character, ArrayList<String>> mapaDePalavras = new HashMap<Character, ArrayList<String>>();
+		String mensagemFinal = "Resultado final:\n";
 
 		for (int i = 0; i < "aeiou".length(); i++) {
-			mapaDePalavras.put("aeiou".charAt(i), new ArrayList<String>());
+			char caractere = "aeiou".charAt(i);
+			mensagemFinal += "\nLetra '" + caractere + "' - Palavras: ";
+			mapaDePalavras.put(caractere, new ArrayList<String>());
 
 			for (String palavra : palavras) {
-				if (palavra.toLowerCase().indexOf("aeiou".charAt(i)) > -1) {
-					mapaDePalavras.get("aeiou".charAt(i)).add(palavra);
+				if (palavra.toLowerCase().indexOf(caractere) > -1) {
+					mapaDePalavras.get(caractere).add(palavra);
 				}
 			}
-			Collections.sort(mapaDePalavras.get("aeiou".charAt(i)));
+
+			Collections.sort(mapaDePalavras.get(caractere));
+
+			for (int j = 0; j < mapaDePalavras.get(caractere).size(); j++) {
+				if (j != mapaDePalavras.get(caractere).size() - 1) {
+					mensagemFinal += mapaDePalavras.get(caractere).get(j) + ", ";
+				} else {
+					mensagemFinal += mapaDePalavras.get(caractere).get(j);
+				}
+			}
 		}
-		
-		System.out.println(mapaDePalavras);
+
+		JOptionPane.showMessageDialog(null, mensagemFinal);
 	}
 
 }

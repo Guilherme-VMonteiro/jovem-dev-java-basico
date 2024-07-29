@@ -12,9 +12,10 @@ public class Exercicio3 {
 	public static void main(String[] args) {
 		List<Integer> listaDeNumeros = new ArrayList<Integer>();
 		Set<Integer> conjuntoDeNumeros = new HashSet<Integer>();
+		Random geradorDeNumeros = new Random();
 		
 		for (int i = 1; i <= 50; i++) {
-			listaDeNumeros.add(gerarNumero());
+			listaDeNumeros.add(geradorDeNumeros.nextInt(21));
 		}
 		
 		Collections.sort(listaDeNumeros);
@@ -23,11 +24,4 @@ public class Exercicio3 {
 		System.out.println(listaDeNumeros.toString());
 		System.out.println(conjuntoDeNumeros.toString());
 	}
-	
-	public static int gerarNumero() {
-		Random gerador = new Random();
-
-		return gerador.nextInt(21);
-	}
-
 }
