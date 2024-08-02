@@ -17,7 +17,5 @@ public class ExemploConsumer {
 		// forEach recebe uma interface funcional Consumer
 		// Consumer consome um dado e não retorna nada
 		alunos.forEach(nome -> System.out.println(nome));
-
 	}
-
 }
