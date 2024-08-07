@@ -13,15 +13,18 @@ public class Desafio {
 		List<Pessoa> pessoas = new ArrayList<>();
 		gerarPessoas(pessoas);
 
-		System.out.println(pessoas.stream()
+		System.out.println(coletarPessoas(pessoas).stream().collect(Collectors.joining(", ")));
+	}
+
+	public static List<String> coletarPessoas(List<Pessoa> pessoas) {
+		return pessoas.stream()
 				.filter(pessoa -> "aeiouAEIOU".indexOf(pessoa.getNome().charAt(0)) != -1
 						|| Year.isLeap(pessoa.getDataNascimento().getYear()))
 				.sorted((pessoa1, pessoa2) -> pessoa1.getNome().compareTo(pessoa2.getNome()) * -1)
-				.map(pessoa -> pessoa.getNome()).collect(Collectors.joining(", ")));
+				.map(pessoa -> pessoa.getNome()).collect(Collectors.toList());
 	}
 
 	static void gerarPessoas(List<Pessoa> lista) {
-
 		Random gerador = new Random();
 		lista.add(new Pessoa("Guilherme", gerarTelefone(gerador), gerarNascimento(gerador)));
 		lista.add(new Pessoa("Pedro", gerarTelefone(gerador), gerarNascimento(gerador)));
@@ -52,5 +55,4 @@ public class Desafio {
 
 		return retorno;
 	}
-
 }

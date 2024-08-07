@@ -5,7 +5,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.swing.JOptionPane;
@@ -15,13 +17,13 @@ public class Desafio {
 	public static void main(String[] args) {
 
 		List<Evento> eventos = new ArrayList<>();
+		Map<Boolean, List<Evento>> eventosMap = new HashMap<Boolean, List<Evento>>(); 
 
 		adicionarEventos(eventos);
 
 		int opcao = 0;
 
 		do {
-
 			opcao = coletaOpcao();
 
 			switch (opcao) {
@@ -79,44 +81,54 @@ public class Desafio {
 		JOptionPane.showMessageDialog(null, builder.toString());
 	}
 
-	private static void adicionarEventos(List<Evento> eventos) {
-
-		eventos.add(new Evento("Futebol", LocalDateTime.of(LocalDate.now().plusDays(5), LocalTime.of(15, 30)),
+	private static void adicionarEventos(Map<Boolean, List<Evento>> eventosMap) {
+		
+		List<Evento> eventosList = new ArrayList<Evento>();
+			
+		eventosList.add(new Evento("Futebol", LocalDateTime.of(LocalDate.now().plusDays(5), LocalTime.of(15, 30)),
 				TipoDeEvento.LAZER));
 
-		eventos.add(
+		eventosList.add(
 				new Evento("Campeonato", LocalDateTime.of(LocalDate.now(), LocalTime.of(19, 30)), TipoDeEvento.LAZER));
 
-		eventos.add(new Evento("Beto carreiro", LocalDateTime.of(LocalDate.now().minusDays(5), LocalTime.of(15, 30)),
+		eventosList.add(new Evento("Beto carreiro", LocalDateTime.of(LocalDate.now().minusDays(5), LocalTime.of(15, 30)),
 				TipoDeEvento.LAZER));
 
-		eventos.add(new Evento("Médico", LocalDateTime.of(LocalDate.now().plusDays(5), LocalTime.of(13, 30)),
+		eventosList.add(new Evento("Médico", LocalDateTime.of(LocalDate.now().plusDays(5), LocalTime.of(13, 30)),
 				TipoDeEvento.OUTROS));
 
-		eventos.add(
+		eventosList.add(
 				new Evento("Dentista", LocalDateTime.of(LocalDate.now(), LocalTime.of(15, 30)), TipoDeEvento.OUTROS));
 
-		eventos.add(new Evento("Lavar o carro", LocalDateTime.of(LocalDate.now().minusDays(5), LocalTime.of(10, 30)),
+		eventosList.add(new Evento("Lavar o carro", LocalDateTime.of(LocalDate.now().minusDays(5), LocalTime.of(10, 30)),
 				TipoDeEvento.OUTROS));
 
-		eventos.add(new Evento("Reunião de alinhamento",
+		eventosList.add(new Evento("Reunião de alinhamento",
 				LocalDateTime.of(LocalDate.now().plusDays(5), LocalTime.of(7, 30)), TipoDeEvento.PROFISSIONAL));
 
-		eventos.add(new Evento("Sprint", LocalDateTime.of(LocalDate.now(), LocalTime.of(13, 30)),
+		eventosList.add(new Evento("Sprint", LocalDateTime.of(LocalDate.now(), LocalTime.of(13, 30)),
 				TipoDeEvento.PROFISSIONAL));
 
-		eventos.add(new Evento("Reunião de negócios",
+		eventosList.add(new Evento("Reunião de negócios",
 				LocalDateTime.of(LocalDate.now().minusDays(5), LocalTime.of(18, 30)), TipoDeEvento.PROFISSIONAL));
 
-		eventos.add(new Evento("Festa da Tia", LocalDateTime.of(LocalDate.now().plusDays(5), LocalTime.of(19, 50)),
+		eventosList.add(new Evento("Festa da Tia", LocalDateTime.of(LocalDate.now().plusDays(5), LocalTime.of(19, 50)),
 				TipoDeEvento.SOCIAL));
 
-		eventos.add(
+		eventosList.add(
 				new Evento("Churrasco", LocalDateTime.of(LocalDate.now(), LocalTime.of(19, 50)), TipoDeEvento.SOCIAL));
 
-		eventos.add(new Evento("Confraternização", LocalDateTime.of(LocalDate.now().minusDays(5), LocalTime.of(19, 50)),
+		eventosList.add(new Evento("Confraternização", LocalDateTime.of(LocalDate.now().minusDays(5), LocalTime.of(19, 50)),
 				TipoDeEvento.SOCIAL));
 
+		for (Evento evento : eventosList) {
+			if(evento.getDataHora().isBefore(LocalDateTime.now())) {
+				if(eventosMap.containsKey(true)) {
+					eventosMap.get(true).add(evento);
+				}
+			}
+		}
+		
 	}
 
 	private static int coletaOpcao() {

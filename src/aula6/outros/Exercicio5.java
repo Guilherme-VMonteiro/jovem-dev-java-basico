@@ -11,16 +11,13 @@ public class Exercicio5 {
 
 		try {
 
-			String numero = JOptionPane.showInputDialog("Insira o tamanho do raio da circunferência:");
+			String numero = JOptionPane.showInputDialog("Insira o tamanho da circunferência:");
 
 			if (numero.equals("")) {
 				throw new NumberFormatException();
 			}
 
-			BigDecimal circunferencia = BigDecimal.valueOf(Integer.parseInt(numero));
-
-			System.out.println(circunferencia.multiply(BigDecimal.valueOf(Math.PI)).multiply(BigDecimal.valueOf(2))
-					.divide(BigDecimal.valueOf(1), 4, RoundingMode.HALF_EVEN));
+			System.out.println(calculaRaioDaCircunferencia(Double.parseDouble(numero.replace(',', '.'))));
 
 		} catch (NullPointerException e) {
 			// Sair
@@ -28,6 +25,11 @@ public class Exercicio5 {
 			JOptionPane.showMessageDialog(null, "O número deve ser um inteiro válido!");
 		}
 
+	}
+
+	public static BigDecimal calculaRaioDaCircunferencia(Double raio) {
+		return BigDecimal.valueOf(raio).multiply(BigDecimal.valueOf(raio)).multiply(BigDecimal.valueOf(Math.PI))
+				.setScale(4, RoundingMode.HALF_EVEN);
 	}
 
 }

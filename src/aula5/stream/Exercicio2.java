@@ -2,6 +2,7 @@ package aula5.stream;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class Exercicio2 {
@@ -11,9 +12,13 @@ public class Exercicio2 {
 		List<Integer> numeros = new ArrayList<Integer>();
 		gerarNumeros(numeros);
 
-		System.out.println("Média dos maiores que 50: " + String.format("%.2f",
-				numeros.stream().filter(n -> n > 50).mapToInt(Integer::intValue).average().getAsDouble()));
+		System.out.println("Média dos maiores que 50: "
+				+ calcularMediaDosMaiores(numeros));
+	}
 
+	static double calcularMediaDosMaiores(List<Integer> numeros) {
+		return numeros.stream().filter(Objects::nonNull).filter(n -> n > 50).mapToInt(Integer::intValue).average()
+				.getAsDouble();
 	}
 
 	static void gerarNumeros(List<Integer> lista) {

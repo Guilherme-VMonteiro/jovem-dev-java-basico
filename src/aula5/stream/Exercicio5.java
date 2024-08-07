@@ -3,8 +3,9 @@ package aula5.stream;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class Exercicio5 {
 
@@ -13,27 +14,32 @@ public class Exercicio5 {
 		List<Pessoa> pessoas = new ArrayList<>();
 		gerarPessoas(pessoas);
 
-		Optional<Pessoa> pessoaBerto = pessoas.stream().filter(pessoa -> pessoa.getNome().endsWith("berto"))
-				.findFirst();
+		System.out.println(buscaPrimeiroNomeTerminadoEmBerto(coletaNomes(pessoas)));
+	}
 
-		System.out.println(pessoaBerto.orElseThrow(() -> new ZeroBertoException()));
+	static List<String> coletaNomes(List<Pessoa> pessoas) {
+		return pessoas.stream().filter(Objects::nonNull).map(pessoa -> pessoa.getNome()).collect(Collectors.toList());
+	}
 
+	public static String buscaPrimeiroNomeTerminadoEmBerto(List<String> nomes) {
+		return nomes.stream().filter(Objects::nonNull).filter(nome -> nome.endsWith("berto")).findFirst()
+				.orElseThrow(() -> new ZeroBertoException());
 	}
 
 	static void gerarPessoas(List<Pessoa> lista) {
 
 		Random gerador = new Random();
 
-		for (int i = 0; i < 10; i++) {
-
-			lista.add(new Pessoa("Pessoa" + i + " " + gerarBerto(gerador), gerarTelefone(gerador),
-					gerarNascimento(gerador)));
-		}
-
-	}
-
-	static String gerarBerto(Random random) {
-		return random.nextInt(101) > 90 ? "berto" : "";
+		lista.add(new Pessoa("Guilherme", gerarTelefone(gerador), gerarNascimento(gerador)));
+		lista.add(new Pessoa("Adalberto", gerarTelefone(gerador), gerarNascimento(gerador)));
+		lista.add(new Pessoa("Laís", gerarTelefone(gerador), gerarNascimento(gerador)));
+		lista.add(new Pessoa("Pedro", gerarTelefone(gerador), gerarNascimento(gerador)));
+		lista.add(new Pessoa("Carlos", gerarTelefone(gerador), gerarNascimento(gerador)));
+		lista.add(new Pessoa("Maria", gerarTelefone(gerador), gerarNascimento(gerador)));
+		lista.add(new Pessoa("Matheus", gerarTelefone(gerador), gerarNascimento(gerador)));
+		lista.add(new Pessoa("João", gerarTelefone(gerador), gerarNascimento(gerador)));
+		lista.add(new Pessoa("Igor", gerarTelefone(gerador), gerarNascimento(gerador)));
+		lista.add(new Pessoa("Antonio", gerarTelefone(gerador), gerarNascimento(gerador)));
 	}
 
 	static LocalDate gerarNascimento(Random random) {

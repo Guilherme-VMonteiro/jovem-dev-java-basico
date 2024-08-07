@@ -11,10 +11,13 @@ public class Exercicio1 {
 		List<Integer> numeros = new ArrayList<Integer>();
 		gerarNumeros(numeros);
 
-		System.out.println("Soma: " + numeros.stream().mapToInt(Integer::intValue).sum());
-
+		System.out.println("Soma: " + somarTodos(numeros));
 	}
 
+	public static int somarTodos(List<Integer> numeros) {
+		return numeros.stream().mapToInt(Integer::intValue).sum();
+	}
+	
 	static void gerarNumeros(List<Integer> lista) {
 		Random gerador = new Random();
 
