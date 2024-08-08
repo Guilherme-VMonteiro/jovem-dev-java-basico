@@ -16,10 +16,9 @@ public class Desafio {
 
 	public static void main(String[] args) {
 
-		List<Evento> eventos = new ArrayList<>();
-		Map<Boolean, List<Evento>> eventosMap = new HashMap<Boolean, List<Evento>>(); 
+		Map<Boolean, List<Evento>> eventosMap = new HashMap<Boolean, List<Evento>>();
 
-		adicionarEventos(eventos);
+		adicionarEventos(eventosMap);
 
 		int opcao = 0;
 
@@ -28,19 +27,19 @@ public class Desafio {
 
 			switch (opcao) {
 			case 1: {
-				coletarEventos(TipoDeEvento.SOCIAL, eventos);
+				coletarEventos(TipoDeEvento.SOCIAL, eventosMap);
 				break;
 			}
 			case 2: {
-				coletarEventos(TipoDeEvento.LAZER, eventos);
+				coletarEventos(TipoDeEvento.LAZER, eventosMap);
 				break;
 			}
 			case 3: {
-				coletarEventos(TipoDeEvento.PROFISSIONAL, eventos);
+				coletarEventos(TipoDeEvento.PROFISSIONAL, eventosMap);
 				break;
 			}
 			case 4: {
-				coletarEventos(TipoDeEvento.OUTROS, eventos);
+				coletarEventos(TipoDeEvento.OUTROS, eventosMap);
 				break;
 			}
 			case 5: {
@@ -56,7 +55,7 @@ public class Desafio {
 
 	}
 
-	private static void coletarEventos(TipoDeEvento tipo, List<Evento> eventos) {
+	private static void coletarEventos(TipoDeEvento tipo, Map<Boolean, List<Evento>> eventosMap) {
 
 		StringBuilder builder = new StringBuilder();
 
@@ -64,16 +63,14 @@ public class Desafio {
 
 		builder.append("\n\nPendentes:\n");
 
-		builder.append(eventos.stream().filter(evento -> evento.getTipo() == tipo)
-				.filter(evento -> LocalDateTime.now().isBefore(evento.getDataHora()))
+		builder.append(eventosMap.get(true).stream().filter(evento -> evento.getTipo() == tipo)
 				.map(evento -> "  " + evento.getDescricao() + " - "
 						+ evento.getDataHora().format(DateTimeFormatter.ofPattern("(E) dd/MM/yyyy - kk:mm")))
 				.collect(Collectors.joining("\n")));
 
 		builder.append("\n\nConcluídos:\n");
 
-		builder.append(eventos.stream().filter(evento -> evento.getTipo() == tipo)
-				.filter(evento -> LocalDateTime.now().isAfter(evento.getDataHora()))
+		builder.append(eventosMap.get(false).stream().filter(evento -> evento.getTipo() == tipo)
 				.map(evento -> "  " + evento.getDescricao() + " - "
 						+ evento.getDataHora().format(DateTimeFormatter.ofPattern("(E) dd/MM/yyyy - kk:mm")))
 				.collect(Collectors.joining("\n")));
@@ -81,18 +78,42 @@ public class Desafio {
 		JOptionPane.showMessageDialog(null, builder.toString());
 	}
 
-	private static void adicionarEventos(Map<Boolean, List<Evento>> eventosMap) {
-		
+	private static void adicionarEventos(Map<Boolean, List<Evento>> eventosMap, List<Evento> eventosList) {
+
+		for (Evento evento : eventosList) {
+			if (evento.getDataHora().isBefore(LocalDateTime.now())) {
+				if (eventosMap.containsKey(false)) {
+					eventosMap.get(false).add(evento);
+				} else {
+					List<Evento> eventos = new ArrayList<>();
+					eventos.add(evento);
+					eventosMap.put(false, eventos);
+				}
+
+			} else {
+				if (eventosMap.containsKey(true)) {
+					eventosMap.get(true).add(evento);
+				} else {
+					List<Evento> eventos = new ArrayList<>();
+					eventos.add(evento);
+					eventosMap.put(true, eventos);
+				}
+			}
+		}
+
+	}
+
+	private static void criarEventos() {
 		List<Evento> eventosList = new ArrayList<Evento>();
-			
+
 		eventosList.add(new Evento("Futebol", LocalDateTime.of(LocalDate.now().plusDays(5), LocalTime.of(15, 30)),
 				TipoDeEvento.LAZER));
 
 		eventosList.add(
 				new Evento("Campeonato", LocalDateTime.of(LocalDate.now(), LocalTime.of(19, 30)), TipoDeEvento.LAZER));
 
-		eventosList.add(new Evento("Beto carreiro", LocalDateTime.of(LocalDate.now().minusDays(5), LocalTime.of(15, 30)),
-				TipoDeEvento.LAZER));
+		eventosList.add(new Evento("Beto carreiro",
+				LocalDateTime.of(LocalDate.now().minusDays(5), LocalTime.of(15, 30)), TipoDeEvento.LAZER));
 
 		eventosList.add(new Evento("Médico", LocalDateTime.of(LocalDate.now().plusDays(5), LocalTime.of(13, 30)),
 				TipoDeEvento.OUTROS));
@@ -100,8 +121,8 @@ public class Desafio {
 		eventosList.add(
 				new Evento("Dentista", LocalDateTime.of(LocalDate.now(), LocalTime.of(15, 30)), TipoDeEvento.OUTROS));
 
-		eventosList.add(new Evento("Lavar o carro", LocalDateTime.of(LocalDate.now().minusDays(5), LocalTime.of(10, 30)),
-				TipoDeEvento.OUTROS));
+		eventosList.add(new Evento("Lavar o carro",
+				LocalDateTime.of(LocalDate.now().minusDays(5), LocalTime.of(10, 30)), TipoDeEvento.OUTROS));
 
 		eventosList.add(new Evento("Reunião de alinhamento",
 				LocalDateTime.of(LocalDate.now().plusDays(5), LocalTime.of(7, 30)), TipoDeEvento.PROFISSIONAL));
@@ -118,19 +139,10 @@ public class Desafio {
 		eventosList.add(
 				new Evento("Churrasco", LocalDateTime.of(LocalDate.now(), LocalTime.of(19, 50)), TipoDeEvento.SOCIAL));
 
-		eventosList.add(new Evento("Confraternização", LocalDateTime.of(LocalDate.now().minusDays(5), LocalTime.of(19, 50)),
-				TipoDeEvento.SOCIAL));
-
-		for (Evento evento : eventosList) {
-			if(evento.getDataHora().isBefore(LocalDateTime.now())) {
-				if(eventosMap.containsKey(true)) {
-					eventosMap.get(true).add(evento);
-				}
-			}
-		}
-		
+		eventosList.add(new Evento("Confraternização",
+				LocalDateTime.of(LocalDate.now().minusDays(5), LocalTime.of(19, 50)), TipoDeEvento.SOCIAL));
 	}
-
+	
 	private static int coletaOpcao() {
 		try {
 			return Integer.parseInt(JOptionPane.showInputDialog("Qual tipo de evento você deseja pesquisar?\n\n"
